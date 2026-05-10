@@ -3,7 +3,9 @@ __pycache__/
 .venv/
 node_modules/
 dist/
+build/
 .vite/
+*.spec
 workspace/
 .env
 .env.*

@@ -52,6 +52,14 @@ Local Voice Pro 是一个本地 Web 工具，用于视频转写、字幕翻译�
 
 克隆项目后，根据系统运行对应启动脚本。
 
+Windows 安装器：
+
+1. 从 GitHub Releases 下载 `LocalVoiceProSetup.exe`。
+2. 双击运行。
+3. 安装器会把项目释放到 `%LOCALAPPDATA%\LocalVoicePro`，展开内置 FFmpeg，安装 Python 依赖，启动本地 Web 服务，并打开 `http://127.0.0.1:8000`。
+
+Windows 安装器仍要求目标电脑已安装 Python 3.10+。通过安装器使用时不需要 Node.js，因为前端已经构建到 `frontend/dist`。
+
 Windows：
 
 ```powershell
@@ -145,6 +153,22 @@ macOS/Linux 启动前端：
 ```text
 http://127.0.0.1:5173
 ```
+
+## 构建 Windows 安装器
+
+在 Windows 开发电脑上运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\packaging\build_windows_setup.ps1
+```
+
+输出文件：
+
+```text
+dist\LocalVoiceProSetup.exe
+```
+
+生成的安装器会包含已构建的前端；如果本地存在 `tools/ffmpeg.zip`，也会一起打包进去。
 
 ## 代理设置
 

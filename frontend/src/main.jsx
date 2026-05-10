@@ -15,7 +15,8 @@ import {
 } from 'lucide-react';
 import './styles.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000';
+const API_BASE = import.meta.env.VITE_API_BASE
+  || (window.location.port === '5173' ? 'http://127.0.0.1:8000' : window.location.origin);
 
 const i18n = {
   zh: {

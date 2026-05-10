@@ -5,6 +5,7 @@ import uuid
 from fastapi import BackgroundTasks, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from .cancel import request_cancel
@@ -251,3 +252,8 @@ def serve_file(file_path: str) -> FileResponse:
     if not resolved.exists() or not resolved.is_file():
         raise HTTPException(status_code=404, detail="File not found")
     return FileResponse(resolved)
+
+
+frontend_dist = ROOT_DIR / "frontend" / "dist"
+if frontend_dist.exists():
+    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")

@@ -52,6 +52,14 @@ Local Voice Pro is a local web tool for video transcription, subtitle translatio
 
 Clone the repository, then run the startup script for your system.
 
+Windows installer:
+
+1. Download `LocalVoiceProSetup.exe` from GitHub Releases.
+2. Run it.
+3. The installer extracts the app to `%LOCALAPPDATA%\LocalVoicePro`, expands bundled FFmpeg, installs Python dependencies, starts the local web server, and opens `http://127.0.0.1:8000`.
+
+The Windows installer still requires Python 3.10+ on the target computer. Node.js is not required for installer-based use because the frontend is already built into `frontend/dist`.
+
 Windows:
 
 ```powershell
@@ -145,6 +153,22 @@ Open:
 ```text
 http://127.0.0.1:5173
 ```
+
+## Build Windows Installer
+
+On a Windows development machine:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\packaging\build_windows_setup.ps1
+```
+
+The output is:
+
+```text
+dist\LocalVoiceProSetup.exe
+```
+
+The generated installer includes the built frontend and `tools/ffmpeg.zip` when that archive exists locally.
 
 ## Proxy
 
