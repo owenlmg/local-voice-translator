@@ -4,6 +4,10 @@
 
 Local Voice Pro 是一个本地 Web 工具，用于视频转写、字幕翻译、配音和字幕视频生成。它参考了 Voice-Pro 的工作流，但目标是提供一个更轻量、容易在本机运行的 FastAPI + React 版本。
 
+## 界面预览
+
+![Local Voice Pro 简体中文界面](docs/images/home-zh.png)
+
 ## 功能简介
 
 - 上传本地音频或视频。
