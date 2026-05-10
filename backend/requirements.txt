@@ -1,0 +1,12 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.4
+httpx[socks]==0.28.1
+faster-whisper==1.1.0
+deep-translator==1.11.4
+edge-tts==7.2.8
+pydub==0.25.1
+pyttsx3==2.99
+opencc-python-reimplemented==0.1.7
+yt-dlp==2026.3.17
