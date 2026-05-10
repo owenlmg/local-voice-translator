@@ -21,7 +21,17 @@ if ($proxyReady) {
   Write-Host "Proxy detected: http://127.0.0.1:7890"
 }
 
-if (Test-Path ".venv\Scripts\python.exe") {
+$portablePython = Join-Path $root "python-runtime\python.exe"
+if (Test-Path $portablePython) {
+  $python = $portablePython
+  $sitePackages = Join-Path $root "python-runtime\Lib\site-packages"
+  if (Test-Path $sitePackages) {
+    $env:PYTHONPATH = "$sitePackages;$root"
+  } else {
+    $env:PYTHONPATH = $root
+  }
+  Write-Host "Using bundled Python runtime."
+} elseif (Test-Path ".venv\Scripts\python.exe") {
   $python = Join-Path $root ".venv\Scripts\python.exe"
 } else {
   $systemPython = Get-Command python -ErrorAction SilentlyContinue
@@ -38,9 +48,11 @@ if (Test-Path ".venv\Scripts\python.exe") {
   $python = Join-Path $root ".venv\Scripts\python.exe"
 }
 
-Write-Host "Installing backend dependencies..."
-& $python -m pip install --upgrade pip
-& $python -m pip install -r backend\requirements.txt
+if (-not (Test-Path $portablePython)) {
+  Write-Host "Installing backend dependencies..."
+  & $python -m pip install --upgrade pip
+  & $python -m pip install -r backend\requirements.txt
+}
 
 $frontendDist = Join-Path $root "frontend\dist\index.html"
 if (-not (Test-Path $frontendDist)) {

@@ -54,11 +54,11 @@ Local Voice Pro 是一个本地 Web 工具，用于视频转写、字幕翻译�
 
 Windows 安装器：
 
-1. 从 GitHub Releases 下载 `LocalVoiceProSetup.exe`。
+1. 从 GitHub Releases 下载 `LocalVoiceProSetup-WithPython.exe`。
 2. 双击运行。
-3. 安装器会把项目释放到 `%LOCALAPPDATA%\LocalVoicePro`，展开内置 FFmpeg，安装 Python 依赖，启动本地 Web 服务，并打开 `http://127.0.0.1:8000`。
+3. 安装器会把项目释放到 `%LOCALAPPDATA%\LocalVoicePro`，展开内置 FFmpeg，启动本地 Web 服务，并打开 `http://127.0.0.1:8000`。
 
-Windows 安装器仍要求目标电脑已安装 Python 3.10+。通过安装器使用时不需要 Node.js，因为前端已经构建到 `frontend/dist`。
+`LocalVoiceProSetup-WithPython.exe` 已包含 Python，目标电脑不需要额外安装 Python 或 Node.js。体积更小的 `LocalVoiceProSetup.exe` 也会保留，适合已经安装 Python 3.10+ 的用户。
 
 Windows：
 
@@ -162,13 +162,20 @@ http://127.0.0.1:5173
 powershell -ExecutionPolicy Bypass -File .\packaging\build_windows_setup.ps1
 ```
 
+构建更大的自带 Python 完整版：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\packaging\build_windows_setup_with_python.ps1
+```
+
 输出文件：
 
 ```text
 dist\LocalVoiceProSetup.exe
+dist\LocalVoiceProSetup-WithPython.exe
 ```
 
-生成的安装器会包含已构建的前端；如果本地存在 `tools/ffmpeg.zip`，也会一起打包进去。
+生成的安装器会包含已构建的前端；如果本地存在 `tools/ffmpeg.zip`，也会一起打包进去。`WithPython` 版本还会包含可搬运 Python 运行时和已安装的后端依赖。
 
 ## 代理设置
 

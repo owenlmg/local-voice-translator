@@ -54,11 +54,11 @@ Clone the repository, then run the startup script for your system.
 
 Windows installer:
 
-1. Download `LocalVoiceProSetup.exe` from GitHub Releases.
+1. Download `LocalVoiceProSetup-WithPython.exe` from GitHub Releases.
 2. Run it.
-3. The installer extracts the app to `%LOCALAPPDATA%\LocalVoicePro`, expands bundled FFmpeg, installs Python dependencies, starts the local web server, and opens `http://127.0.0.1:8000`.
+3. The installer extracts the app to `%LOCALAPPDATA%\LocalVoicePro`, expands bundled FFmpeg, starts the local web server, and opens `http://127.0.0.1:8000`.
 
-The Windows installer still requires Python 3.10+ on the target computer. Node.js is not required for installer-based use because the frontend is already built into `frontend/dist`.
+`LocalVoiceProSetup-WithPython.exe` includes Python and does not require Python or Node.js on the target computer. A smaller `LocalVoiceProSetup.exe` build is also available for users who already have Python 3.10+ installed.
 
 Windows:
 
@@ -162,13 +162,20 @@ On a Windows development machine:
 powershell -ExecutionPolicy Bypass -File .\packaging\build_windows_setup.ps1
 ```
 
+Build the larger self-contained installer with bundled Python:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\packaging\build_windows_setup_with_python.ps1
+```
+
 The output is:
 
 ```text
 dist\LocalVoiceProSetup.exe
+dist\LocalVoiceProSetup-WithPython.exe
 ```
 
-The generated installer includes the built frontend and `tools/ffmpeg.zip` when that archive exists locally.
+The generated installers include the built frontend and `tools/ffmpeg.zip` when that archive exists locally. The `WithPython` build also includes a portable Python runtime and the installed backend dependencies.
 
 ## Proxy
 

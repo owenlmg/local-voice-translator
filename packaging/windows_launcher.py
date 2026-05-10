@@ -22,6 +22,9 @@ def install_dir() -> Path:
 def extract_payload(target: Path) -> None:
     payload = bundled_path("payload.zip")
     if not payload.exists():
+        matches = sorted(bundled_path(".").glob("payload*.zip"))
+        payload = matches[0] if matches else payload
+    if not payload.exists():
         raise RuntimeError(f"payload.zip was not found beside the launcher: {payload}")
 
     marker = target / ".payload-version"
@@ -94,7 +97,10 @@ def main() -> int:
         print("")
         print(f"Setup failed: {exc}")
         print("")
-        input("Press Enter to exit...")
+        try:
+            input("Press Enter to exit...")
+        except EOFError:
+            pass
         return 1
 
 
