@@ -119,7 +119,7 @@ Then fill in:
 - Base URL, for example `https://api.openai.com/v1`
 - Model, for example `gpt-4o-mini`
 
-The key is saved only in browser localStorage on your machine. Do not commit `.env`, browser data, `workspace`, or other local secrets.
+The key is saved only in browser localStorage on your machine.
 
 ## Generated Files
 
@@ -148,23 +148,9 @@ Translation cache is stored in:
 workspace/translation-cache/
 ```
 
-## What Not To Commit
-
-Do not commit:
-
-- `.venv/`
-- `frontend/node_modules/`
-- `frontend/dist/`
-- `workspace/`
-- `.env`
-- API keys
-- large downloaded models
-- large FFmpeg binary bundles unless you intentionally publish a release artifact
-
 ## Notes
 
 - Hardcoded subtitles require re-encoding video. Use CRF and preset settings to balance file size, speed, and quality.
 - Local Windows SAPI voices depend on voices installed on the system.
 - Edge-TTS can be unstable for some voices or networks; use local TTS fallback when needed.
 - Faster-Whisper downloads models on first use.
-
