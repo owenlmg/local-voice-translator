@@ -119,7 +119,7 @@ ChatGPT / OpenAI 兼容 API
 - Base URL，例如 `https://api.openai.com/v1`
 - 模型，例如 `gpt-4o-mini`
 
-API Key 只保存在你本机浏览器的 localStorage 中。不要把 `.env`、浏览器数据、`workspace` 或任何密钥提交到 GitHub。
+API Key 只保存在你本机浏览器的 localStorage 中。
 
 ## 输出文件
 
@@ -147,19 +147,6 @@ workspace/jobs/{job_id}/
 ```text
 workspace/translation-cache/
 ```
-
-## 不要上传到 GitHub 的内容
-
-不要提交：
-
-- `.venv/`
-- `frontend/node_modules/`
-- `frontend/dist/`
-- `workspace/`
-- `.env`
-- API Key 或任何私钥
-- 下载的大模型
-- 大型 FFmpeg 二进制包，除非你明确要作为 release artifact 发布
 
 ## 注意事项
 
