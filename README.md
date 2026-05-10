@@ -1,6 +1,6 @@
 # Local Voice Pro
 
-[简体中文文档](README.zh-CN.md)
+[??????](README.zh-CN.md)
 
 Local Voice Pro is a local web tool for video transcription, subtitle translation, dubbing, and captioned video rendering. It is inspired by the workflow of Voice-Pro, but this project focuses on a smaller, easier-to-run local pipeline built with FastAPI and React.
 
@@ -12,7 +12,7 @@ Local Voice Pro is a local web tool for video transcription, subtitle translatio
 - Transcribe speech into SRT/VTT/TXT subtitles with Faster-Whisper.
 - Translate subtitles with Google Translate or an OpenAI-compatible Chat Completions API.
 - Cache translation results to avoid paying twice for the same subtitle translation.
-- Generate dubbing audio with Edge-TTS or local Windows SAPI fallback.
+- Generate dubbing audio with Edge-TTS, with a local system TTS fallback where available.
 - Replace the original video audio track with dubbed audio.
 - Burn translated subtitles directly into video frames.
 - Stop running jobs from the web UI.
@@ -29,12 +29,16 @@ Local Voice Pro is a local web tool for video transcription, subtitle translatio
 
 ## Requirements
 
-- Windows 10/11 is recommended.
+- Windows 10/11, macOS, or Linux.
 - Python 3.10 or newer.
 - Node.js 20 or newer.
 - FFmpeg and ffprobe.
-  - The development copy may include `tools/ffmpeg`, but GitHub releases usually should not include large binaries.
-  - If `tools/ffmpeg/bin/ffmpeg.exe` is not present, install FFmpeg globally and add it to PATH.
+  - Windows: install FFmpeg globally or place it in `tools/ffmpeg/bin`.
+  - macOS: `brew install ffmpeg`
+  - Ubuntu/Debian: `sudo apt update && sudo apt install -y ffmpeg`
+- Optional local TTS dependencies:
+  - Linux: install `espeak-ng` if you want to use local system TTS, for example `sudo apt install -y espeak-ng`.
+  - macOS/Windows: local voices come from the operating system.
 - Network access for:
   - YouTube downloads.
   - first-time Whisper model downloads.
@@ -42,13 +46,22 @@ Local Voice Pro is a local web tool for video transcription, subtitle translatio
 
 ## Quick Start
 
-Clone the repository, then run:
+Clone the repository, then run the startup script for your system.
+
+Windows:
 
 ```powershell
 .\start.bat
 ```
 
-The script will:
+macOS/Linux:
+
+```bash
+chmod +x start.sh stop.sh scripts/*.sh
+./start.sh
+```
+
+The scripts will:
 
 - detect local FFmpeg,
 - detect the default proxy at `http://127.0.0.1:7890` if available,
@@ -61,11 +74,21 @@ The script will:
 
 Stop services:
 
+Windows:
+
 ```powershell
 .\stop.bat
 ```
 
+macOS/Linux:
+
+```bash
+./stop.sh
+```
+
 ## Manual Installation
+
+Windows PowerShell:
 
 ```powershell
 python -m venv .venv
@@ -77,16 +100,40 @@ npm.cmd install
 cd ..
 ```
 
-Start backend:
+macOS/Linux:
+
+```bash
+python3 -m venv .venv
+./.venv/bin/python -m pip install --upgrade pip
+./.venv/bin/python -m pip install -r backend/requirements.txt
+
+cd frontend
+npm install
+cd ..
+```
+
+Start backend on Windows:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\start-backend.ps1
 ```
 
-Start frontend:
+Start frontend on Windows:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\start-frontend.ps1
+```
+
+Start backend on macOS/Linux:
+
+```bash
+./scripts/start-backend.sh
+```
+
+Start frontend on macOS/Linux:
+
+```bash
+./scripts/start-frontend.sh
 ```
 
 Open:
@@ -151,6 +198,6 @@ workspace/translation-cache/
 ## Notes
 
 - Hardcoded subtitles require re-encoding video. Use CRF and preset settings to balance file size, speed, and quality.
-- Local Windows SAPI voices depend on voices installed on the system.
+- Local TTS voices depend on voices installed on the operating system. Edge-TTS is the recommended cross-platform default.
 - Edge-TTS can be unstable for some voices or networks; use local TTS fallback when needed.
 - Faster-Whisper downloads models on first use.
