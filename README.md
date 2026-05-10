@@ -1,6 +1,6 @@
 # Local Voice Pro
 
-[??????](README.zh-CN.md)
+[简体中文文档](README.zh-CN.md)
 
 Local Voice Pro is a local web tool for video transcription, subtitle translation, dubbing, and captioned video rendering. It is inspired by the workflow of Voice-Pro, but this project focuses on a smaller, easier-to-run local pipeline built with FastAPI and React.
 
