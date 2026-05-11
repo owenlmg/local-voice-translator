@@ -7,6 +7,7 @@ from pathlib import Path
 
 
 APP_NAME = "LocalVoicePro"
+DISPLAY_NAME = "Local Voice Pro"
 
 
 def bundled_path(name: str) -> Path:
@@ -17,6 +18,17 @@ def bundled_path(name: str) -> Path:
 def install_dir() -> Path:
     root = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
     return Path(root) / APP_NAME
+
+
+def desktop_dir() -> Path:
+    return Path(os.environ.get("USERPROFILE", str(Path.home()))) / "Desktop"
+
+
+def start_menu_dir() -> Path:
+    appdata = os.environ.get("APPDATA")
+    if appdata:
+        return Path(appdata) / "Microsoft" / "Windows" / "Start Menu" / "Programs" / DISPLAY_NAME
+    return Path.home() / "AppData" / "Roaming" / "Microsoft" / "Windows" / "Start Menu" / "Programs" / DISPLAY_NAME
 
 
 def extract_payload(target: Path) -> None:
@@ -70,6 +82,72 @@ def extract_ffmpeg(target: Path) -> None:
             shutil.copy2(src, dest_bin / name)
 
 
+def write_command_files(target: Path) -> tuple[Path, Path]:
+    start_cmd = target / "Start Local Voice Pro.cmd"
+    stop_cmd = target / "Stop Local Voice Pro.cmd"
+    start_script = target / "scripts" / "start-installed.ps1"
+    stop_script = target / "scripts" / "stop-all.ps1"
+
+    start_cmd.write_text(
+        "\r\n".join(
+            [
+                "@echo off",
+                f'cd /d "{target}"',
+                f'powershell -NoProfile -ExecutionPolicy Bypass -File "{start_script}"',
+                "pause",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    stop_cmd.write_text(
+        "\r\n".join(
+            [
+                "@echo off",
+                f'cd /d "{target}"',
+                f'powershell -NoProfile -ExecutionPolicy Bypass -File "{stop_script}"',
+                "pause",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    return start_cmd, stop_cmd
+
+
+def create_shortcut(shortcut_path: Path, target_path: Path, working_dir: Path, description: str) -> None:
+    def ps_quote(value: str) -> str:
+        return "'" + value.replace("'", "''") + "'"
+
+    shortcut_path.parent.mkdir(parents=True, exist_ok=True)
+    script = (
+        "$shell = New-Object -ComObject WScript.Shell; "
+        f"$shortcut = $shell.CreateShortcut({ps_quote(str(shortcut_path))}); "
+        f"$shortcut.TargetPath = {ps_quote(str(target_path))}; "
+        f"$shortcut.WorkingDirectory = {ps_quote(str(working_dir))}; "
+        f"$shortcut.Description = {ps_quote(description)}; "
+        "$shortcut.Save()"
+    )
+    subprocess.run(
+        ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-Command", script],
+        check=True,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+    )
+
+
+def create_shortcuts(target: Path) -> None:
+    start_cmd, stop_cmd = write_command_files(target)
+    menu = start_menu_dir()
+    create_shortcut(menu / "Local Voice Pro.lnk", start_cmd, target, "Start Local Voice Pro")
+    create_shortcut(menu / "Stop Local Voice Pro.lnk", stop_cmd, target, "Stop Local Voice Pro")
+    try:
+        create_shortcut(desktop_dir() / "Local Voice Pro.lnk", start_cmd, target, "Start Local Voice Pro")
+    except Exception as exc:
+        print(f"Desktop shortcut could not be created: {exc}")
+    print(f"Start Menu shortcuts created: {menu}")
+
+
 def run_start_script(target: Path) -> int:
     script = target / "scripts" / "start-installed.ps1"
     if not script.exists():
@@ -92,6 +170,7 @@ def main() -> int:
     try:
         extract_payload(target)
         extract_ffmpeg(target)
+        create_shortcuts(target)
         return run_start_script(target)
     except Exception as exc:
         print("")

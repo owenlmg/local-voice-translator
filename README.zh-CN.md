@@ -56,9 +56,11 @@ Windows 安装器：
 
 1. 从 GitHub Releases 下载 `LocalVoiceProSetup-WithPython.exe`。
 2. 双击运行。
-3. 安装器会把项目释放到 `%LOCALAPPDATA%\LocalVoicePro`，展开内置 FFmpeg，启动本地 Web 服务，并打开 `http://127.0.0.1:8000`。
+3. 安装器会把项目释放到 `%LOCALAPPDATA%\LocalVoicePro`，展开内置 FFmpeg，创建开始菜单快捷方式，启动本地 Web 服务，并打开 `http://127.0.0.1:8000`。
 
 `LocalVoiceProSetup-WithPython.exe` 已包含 Python，目标电脑不需要额外安装 Python 或 Node.js。体积更小的 `LocalVoiceProSetup.exe` 也会保留，适合已经安装 Python 3.10+ 的用户。
+
+安装完成后，可以从“开始菜单 -> Local Voice Pro -> Local Voice Pro”再次启动。Windows 允许时也会自动创建桌面快捷方式。
 
 Windows：
 

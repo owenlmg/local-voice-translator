@@ -56,9 +56,11 @@ Windows installer:
 
 1. Download `LocalVoiceProSetup-WithPython.exe` from GitHub Releases.
 2. Run it.
-3. The installer extracts the app to `%LOCALAPPDATA%\LocalVoicePro`, expands bundled FFmpeg, starts the local web server, and opens `http://127.0.0.1:8000`.
+3. The installer extracts the app to `%LOCALAPPDATA%\LocalVoicePro`, expands bundled FFmpeg, creates Start Menu shortcuts, starts the local web server, and opens `http://127.0.0.1:8000`.
 
 `LocalVoiceProSetup-WithPython.exe` includes Python and does not require Python or Node.js on the target computer. A smaller `LocalVoiceProSetup.exe` build is also available for users who already have Python 3.10+ installed.
+
+After installation, launch it again from Start Menu -> Local Voice Pro -> Local Voice Pro. A desktop shortcut is also created when Windows allows it.
 
 Windows:
 
